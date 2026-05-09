@@ -1,8 +1,8 @@
 import json
+import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
-import os
 TOKEN = os.environ.get("BOT_TOKEN")
 
 with open("data.json", "r", encoding="utf-8") as file:
@@ -19,18 +19,11 @@ async def search(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("Name not found.")
 
-print("Bot is starting...")
-
 app = ApplicationBuilder().token(TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, search))
 
-import asyncio
-
-async def main():
-    print("Bot starting...")
-    await app.run_polling()
-
 if __name__ == "__main__":
-    asyncio.run(main())
+    print("Bot is starting...")
+    app.run_polling()
